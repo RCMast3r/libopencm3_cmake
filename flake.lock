@@ -6,14 +6,17 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1693093964,
-        "narHash": "sha256-Fjskws2Kf8yhrDkSMNsvNhROymyNqwE/7DMWF5EoaTA=",
-        "path": "/home/ben/hytech/libopencm3",
-        "type": "path"
+        "lastModified": 1693095200,
+        "narHash": "sha256-PGIo8J8yz1HtlBphfcm48KDR/quMvgRy0vI5/0yCWJM=",
+        "owner": "RCMast3r",
+        "repo": "libopencm3",
+        "rev": "73e6c490b6c5d79543a839c291d343f297bde170",
+        "type": "github"
       },
       "original": {
-        "path": "/home/ben/hytech/libopencm3",
-        "type": "path"
+        "owner": "RCMast3r",
+        "repo": "libopencm3",
+        "type": "github"
       }
     },
     "nixpkgs": {
