@@ -1,2 +1,0 @@
-/home/ben/hytech/libopencm3_cmake/build/CMakeFiles/edit_cache.dir
-/home/ben/hytech/libopencm3_cmake/build/CMakeFiles/rebuild_cache.dir
