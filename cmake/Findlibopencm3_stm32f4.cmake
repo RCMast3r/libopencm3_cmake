@@ -1,4 +1,4 @@
-include(GNUInstallDirs)
+include(GNUInstallDirs)==
 
 find_library(
     libopencm3_stm32f4_LIBRARY
