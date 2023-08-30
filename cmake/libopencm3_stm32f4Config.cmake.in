@@ -1,5 +1,52 @@
 @PACKAGE_INIT@
 
-set_and_check(CMAKE_MODULE_PATH "@PACKAGE_CMAKE_MODULE_PATH@")
-set_and_check(CMAKE_INCLUDE_PATH "@PACKAGE_CMAKE_INCLUDE_PATH@")
-set_and_check(CMAKE_LIBRARY_PATH "@PACKAGE_CMAKE_LIBRARY_PATH@")
+include(GNUInstallDirs)
+# set(CMAKE_MODULE_PATH "@PACKAGE_CMAKE_MODULE_PATH@")
+set(CMAKE_INCLUDE_PATH "@PACKAGE_CMAKE_INCLUDE_PATH@")
+set(CMAKE_LIBRARY_PATH "@PACKAGE_CMAKE_LIBRARY_PATH@")
+
+# Set the installation paths for use in the config file
+set(libopencm3_INSTALL_DIR "@CMAKE_INSTALL_PREFIX@")
+
+find_library(
+    libopencm3_stm32f4_LIBRARY
+    NAMES libopencm3_stm32f4.a
+    HINTS "${CMAKE_LIBRARY_PATH}"
+    )
+
+find_path(libopencm3_stm32f4_INCLUDE_DIR
+  HINTS ${CMAKE_INCLUDE_PATH}
+  NAMES libopencm3 libopencmsis
+  )
+
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(libopencm3_stm32f4 DEFAULT_MSG
+                                  libopencm3_stm32f4_LIBRARY
+                                  libopencm3_stm32f4_INCLUDE_DIR)
+
+mark_as_advanced(libopencm3_stm32f4_LIBRARY libopencm3_stm32f4_INCLUDE_DIR)
+
+if(libopencm3_stm32f4_FOUND AND NOT TARGET libopencm3_stm32f4)
+  add_library(libopencm3_stm32f4 STATIC IMPORTED)
+  set_target_properties(
+    libopencm3_stm32f4
+    PROPERTIES
+      INTERFACE_INCLUDE_DIRECTORIES "${libopencm3_stm32f4_INCLUDE_DIR}"
+      IMPORTED_LOCATION ${libopencm3_stm32f4_LIBRARY})
+endif()
+
+target_compile_definitions(libopencm3_stm32f4 INTERFACE -DSTM32F4)
+
+# from https://github.com/libopencm3/libopencm3/blob/88e91c9a7cced8096c53fb942dcff1d7bdf6c91b/lib/stm32/f4/Makefile
+set(COMPILE_OPTIONS 
+  --static
+  -nostartfiles
+  -fno-common
+  -mcpu=cortex-m4
+  -mthumb
+  -mfloat-abi=hard
+  -mfpu=fpv4-sp-d16
+)
+target_compile_options(libopencm3_stm32f4 INTERFACE ${COMPILE_OPTIONS})
+target_link_options(libopencm3_stm32f4 INTERFACE ${COMPILE_OPTIONS})
